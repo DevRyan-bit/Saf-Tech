@@ -96,7 +96,7 @@ const GetProducts = ({ cart, setCart }) => {
         setError("");
         setLoading("Please wait ... Receiving Products...");
         try {
-            const response = await fetch("https://.pythonanywhere.com/api/getproducts");
+            const response = await fetch("https://ryan2025.pythonanywhere.com/api/getproducts");
             const data = await response.json();
 
             if (Array.isArray(data)) {
@@ -318,6 +318,7 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
 
