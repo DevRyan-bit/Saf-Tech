@@ -62,7 +62,6 @@ const GetProducts = ({ cart, setCart }) => {
                 sessionStorage.setItem("isLoaded", "true");
             }, 3000);
         } else {
-            getProducts();
             setIsPageLoading(false);
         }
     }, []);
@@ -254,4 +253,5 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
