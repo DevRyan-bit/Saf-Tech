@@ -117,7 +117,7 @@ const GetProducts = ({ cart, setCart }) => {
             setLoading("");
             setIsPageLoading(false);
         }
-    }, ["setProducts"]); // 👈 empty dependency array ensures stability
+    }, []); // 👈 empty dependency array ensures stability
 
     // ✅ Now this is safe and ESLint-clean
     useEffect(() => {
@@ -320,6 +320,7 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
 
