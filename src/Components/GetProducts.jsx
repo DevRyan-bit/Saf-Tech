@@ -96,7 +96,7 @@ const GetProducts = ({ cart, setCart }) => {
         setError("");
         setLoading("Please wait ... Receiving Products...");
         try {
-            const response = await fetch("https://ryan2025.pythonanywhere.com/api/getproducts");
+            const response = await fetch("https://.pythonanywhere.com/api/getproducts");
             const data = await response.json();
 
             if (Array.isArray(data)) {
@@ -120,48 +120,6 @@ const GetProducts = ({ cart, setCart }) => {
     };
 
     if (!sessionStorage.getItem("isLoaded")) {
-        setTimeout(() => {
-            getProducts();
-            sessionStorage.setItem("isLoaded", "true");
-        }, 3000);
-    } else {
-        getProducts();
-        setIsPageLoading(false);
-    }
-}, []); // ✅ No missing deps, Vercel build passes
-
-
-    // ✅ useCallback prevents the function from being recreated each render
-    // const getProducts = useCallback(async () => {
-    //     setError("");
-    //     setLoading("Please wait ... Receiving Products...");
-    //     try {
-    //         const response = await fetch("https://ryan2025.pythonanywhere.com/api/getproducts");
-    //         const data = await response.json();
-
-    //         if (Array.isArray(data)) {
-    //             setProducts(data);
-    //             const grouped = data.reduce((acc, product) => {
-    //                 const normalizedCategory = (product.product_category || "").trim().toLowerCase();
-    //                 if (!acc[normalizedCategory]) acc[normalizedCategory] = [];
-    //                 acc[normalizedCategory].push(product);
-    //                 return acc;
-    //             }, {});
-    //             setCategories(grouped);
-    //         } else {
-    //             setError("Invalid product data received.");
-    //         }
-    //     } catch (err) {
-    //         setError("Failed to load products. Please try again.");
-    //     } finally {
-    //         setLoading("");
-    //         setIsPageLoading(false);
-    //     }
-    // }, []); // 👈 empty dependency array ensures stability
-
-    // ✅ Now this is safe and ESLint-clean
-    useEffect(() => {
-        if (!sessionStorage.getItem("isLoaded")) {
             setTimeout(() => {
                 getProducts();
                 sessionStorage.setItem("isLoaded", "true");
@@ -170,9 +128,9 @@ const GetProducts = ({ cart, setCart }) => {
             getProducts();
             setIsPageLoading(false);
         }
-    }, [getProducts]); // 👈 stable reference, no warning now
+    }, []); // ✅ no missing dependencies, no undefined variable
 
-
+    
     // Scroll-based scaling effect for product cards
     useEffect(() => {
         const scaleProductsOnScroll = () => {
@@ -360,6 +318,7 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
 
