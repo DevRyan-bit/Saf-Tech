@@ -91,8 +91,8 @@ const GetProducts = ({ cart, setCart }) => {
 
     const img_url = "https://ryan2025.pythonanywhere.com/static/images/";
 
-    // ✅ useCallback prevents the function from being recreated each render
-    const getProducts = useCallback(async () => {
+    useEffect(() => {
+    const getProducts = async () => {
         setError("");
         setLoading("Please wait ... Receiving Products...");
         try {
@@ -117,7 +117,47 @@ const GetProducts = ({ cart, setCart }) => {
             setLoading("");
             setIsPageLoading(false);
         }
-    }, []); // 👈 empty dependency array ensures stability
+    };
+
+    if (!sessionStorage.getItem("isLoaded")) {
+        setTimeout(() => {
+            getProducts();
+            sessionStorage.setItem("isLoaded", "true");
+        }, 3000);
+    } else {
+        getProducts();
+        setIsPageLoading(false);
+    }
+}, []); // ✅ No missing deps, Vercel build passes
+
+
+    // ✅ useCallback prevents the function from being recreated each render
+    // const getProducts = useCallback(async () => {
+    //     setError("");
+    //     setLoading("Please wait ... Receiving Products...");
+    //     try {
+    //         const response = await fetch("https://ryan2025.pythonanywhere.com/api/getproducts");
+    //         const data = await response.json();
+
+    //         if (Array.isArray(data)) {
+    //             setProducts(data);
+    //             const grouped = data.reduce((acc, product) => {
+    //                 const normalizedCategory = (product.product_category || "").trim().toLowerCase();
+    //                 if (!acc[normalizedCategory]) acc[normalizedCategory] = [];
+    //                 acc[normalizedCategory].push(product);
+    //                 return acc;
+    //             }, {});
+    //             setCategories(grouped);
+    //         } else {
+    //             setError("Invalid product data received.");
+    //         }
+    //     } catch (err) {
+    //         setError("Failed to load products. Please try again.");
+    //     } finally {
+    //         setLoading("");
+    //         setIsPageLoading(false);
+    //     }
+    // }, []); // 👈 empty dependency array ensures stability
 
     // ✅ Now this is safe and ESLint-clean
     useEffect(() => {
@@ -320,6 +360,7 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
 
