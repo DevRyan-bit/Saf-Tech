@@ -1,18 +1,85 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+// import { useNavigate, Link } from "react-router-dom";
+// import SubscribeButton from './SubscribeButton'; 
+// import Footer from "./Footer";
+// import Carousel from "./Carousel";
+
+// const GetProducts = ({ cart, setCart }) => {
+//     const [setProducts] = useState([]);
+//     const [error, setError] = useState("");
+//     const [loading, setLoading] = useState("");
+//     const [isPageLoading, setIsPageLoading] = useState(true);
+//     const [categories, setCategories] = useState({});
+//     const navigate = useNavigate();
+
+//     // Retrieve user information from localStorage
+//     let user = null;
+//     try {
+//         const rawUser = localStorage.getItem("user");
+//         user = rawUser ? JSON.parse(rawUser) : null;
+//     } catch (e) {
+//         console.error("Invalid user data in localStorage:", e);
+//         localStorage.removeItem("user");
+//     }
+
+//     const img_url = "https://ryan2025.pythonanywhere.com/static/images/";
+
+//     // Function to fetch products
+//     const getProducts = async () => {
+//         setError("");
+//         setLoading("Please wait ... Receiving Products...");
+//         try {
+//             const response = await fetch("https://ryan2025.pythonanywhere.com/api/getproducts");
+//             const data = await response.json();
+
+//             if (Array.isArray(data)) {
+//                 setProducts(data);
+//                 const grouped = data.reduce((acc, product) => {
+//                     const normalizedCategory = (product.product_category || "").trim().toLowerCase();
+//                     if (!acc[normalizedCategory]) {
+//                         acc[normalizedCategory] = [];
+//                     }
+//                     acc[normalizedCategory].push(product);
+//                     return acc;
+//                 }, {});
+//                 setCategories(grouped);
+//             } else {
+//                 setError("Invalid product data received.");
+//             }
+//         } catch (err) {
+//             setError("Failed to load products. Please try again.");
+//         } finally {
+//             setLoading("");
+//             setIsPageLoading(false);
+//         }
+//     };
+
+//     // UseEffect to load products once the page is loaded
+//     useEffect(() => {
+//         if (!sessionStorage.getItem("isLoaded")) {
+//             setTimeout(() => {
+//                 getProducts();
+//                 sessionStorage.setItem("isLoaded", "true");
+//             }, 3000);
+//         } else {
+//             getProducts();
+//             setIsPageLoading(false);
+//         }
+//     }, [getProducts]);
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import SubscribeButton from './SubscribeButton'; 
 import Footer from "./Footer";
 import Carousel from "./Carousel";
 
 const GetProducts = ({ cart, setCart }) => {
-    const [setProducts] = useState([]);
+    const [products, setProducts] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState("");
     const [isPageLoading, setIsPageLoading] = useState(true);
     const [categories, setCategories] = useState({});
     const navigate = useNavigate();
 
-    // Retrieve user information from localStorage
     let user = null;
     try {
         const rawUser = localStorage.getItem("user");
@@ -24,8 +91,8 @@ const GetProducts = ({ cart, setCart }) => {
 
     const img_url = "https://ryan2025.pythonanywhere.com/static/images/";
 
-    // Function to fetch products
-    const getProducts = async () => {
+    // ✅ useCallback prevents the function from being recreated each render
+    const getProducts = useCallback(async () => {
         setError("");
         setLoading("Please wait ... Receiving Products...");
         try {
@@ -36,9 +103,7 @@ const GetProducts = ({ cart, setCart }) => {
                 setProducts(data);
                 const grouped = data.reduce((acc, product) => {
                     const normalizedCategory = (product.product_category || "").trim().toLowerCase();
-                    if (!acc[normalizedCategory]) {
-                        acc[normalizedCategory] = [];
-                    }
+                    if (!acc[normalizedCategory]) acc[normalizedCategory] = [];
                     acc[normalizedCategory].push(product);
                     return acc;
                 }, {});
@@ -52,9 +117,9 @@ const GetProducts = ({ cart, setCart }) => {
             setLoading("");
             setIsPageLoading(false);
         }
-    };
+    }, []); // 👈 empty dependency array ensures stability
 
-    // UseEffect to load products once the page is loaded
+    // ✅ Now this is safe and ESLint-clean
     useEffect(() => {
         if (!sessionStorage.getItem("isLoaded")) {
             setTimeout(() => {
@@ -65,7 +130,8 @@ const GetProducts = ({ cart, setCart }) => {
             getProducts();
             setIsPageLoading(false);
         }
-    }, [getProducts]);
+    }, [getProducts]); // 👈 stable reference, no warning now
+
 
     // Scroll-based scaling effect for product cards
     useEffect(() => {
@@ -254,5 +320,6 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
