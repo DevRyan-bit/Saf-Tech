@@ -66,7 +66,7 @@
 //             setIsPageLoading(false);
 //         }
 //     }, [getProducts]);
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import SubscribeButton from './SubscribeButton'; 
 import Footer from "./Footer";
@@ -128,7 +128,7 @@ const GetProducts = ({ cart, setCart }) => {
             getProducts();
             setIsPageLoading(false);
         }
-    }, []); // ✅ no missing dependencies, no undefined variable
+    }, ["setProducts"]); // ✅ no missing dependencies, no undefined variable
 
     
     // Scroll-based scaling effect for product cards
@@ -318,6 +318,7 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
 
