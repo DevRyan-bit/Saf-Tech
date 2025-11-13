@@ -62,9 +62,10 @@ const GetProducts = ({ cart, setCart }) => {
                 sessionStorage.setItem("isLoaded", "true");
             }, 3000);
         } else {
+            getProducts();
             setIsPageLoading(false);
         }
-    }, []);
+    }, [getProducts]);
 
     // Scroll-based scaling effect for product cards
     useEffect(() => {
