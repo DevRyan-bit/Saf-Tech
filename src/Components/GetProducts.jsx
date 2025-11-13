@@ -73,7 +73,7 @@ import Footer from "./Footer";
 import Carousel from "./Carousel";
 
 const GetProducts = ({ cart, setCart }) => {
-    const [products, setProducts] = useState([]);
+    const [_products, setProducts] = useState([]);
     const [error, setError] = useState("");
     const [loading, setLoading] = useState("");
     const [isPageLoading, setIsPageLoading] = useState(true);
@@ -318,6 +318,7 @@ const GetProducts = ({ cart, setCart }) => {
 };
 
 export default GetProducts;
+
 
 
 
